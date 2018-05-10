@@ -24,7 +24,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             scene = SCNScene(named: "art.scnassets/TestScene.scn")!
         }
         sceneView.scene = scene
-        createShapes()
+        if !useScene {
+            createShapes()
+        }
     }
     
     func createShapes() {
