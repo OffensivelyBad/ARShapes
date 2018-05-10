@@ -26,15 +26,44 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.scene = scene
         if !useScene {
             createShapes()
+            addLights()
         }
     }
     
-    func createShapes() {
+    private func createShapes() {
         let pyramid = SCNPyramid(width: 0.2, height: 0.2, length: 0.2)
         pyramid.firstMaterial?.diffuse.contents = UIColor.blue
         let pyramidNode = SCNNode(geometry: pyramid)
         pyramidNode.position.z = -0.8
         sceneView.scene.rootNode.addChildNode(pyramidNode)
+        
+        let box = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0.01)
+        box.firstMaterial?.diffuse.contents = UIColor.red
+        let boxNode = SCNNode(geometry: box)
+        boxNode.position = SCNVector3Make(-0.5, 0, -0.8)
+        sceneView.scene.rootNode.addChildNode(boxNode)
+        
+        let sphere = SCNSphere(radius: 0.2)
+        sphere.firstMaterial?.diffuse.contents = UIColor.yellow
+        let sphereNode = SCNNode(geometry: sphere)
+        sphereNode.position = SCNVector3Make(0.5, 0, -0.8)
+        sceneView.scene.rootNode.addChildNode(sphereNode)
+    }
+    
+    private func addLights() {
+        let directionalLight = SCNLight()
+        directionalLight.type = .directional
+        let directionalNode = SCNNode()
+        directionalNode.light = directionalLight
+        directionalNode.eulerAngles.x = -.pi/4
+        sceneView.scene.rootNode.addChildNode(directionalNode)
+        
+        let ambientLight = SCNLight()
+        ambientLight.type = .ambient
+        ambientLight.color = UIColor.lightGray
+        let ambientNode = SCNNode()
+        ambientNode.light = ambientLight
+        sceneView.scene.rootNode.addChildNode(ambientNode)
     }
     
     override func viewWillAppear(_ animated: Bool) {
